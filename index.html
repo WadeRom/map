@@ -11,6 +11,7 @@
       rel="stylesheet"
     />
     <style>
+        
       body {
         font-family: "Roboto", sans-serif;
         margin: 20px;
@@ -20,6 +21,11 @@
       h1 {
         margin-top: 20px;
         color: #ffffff;
+        text-align: center;
+      }
+      #totalDistance{
+        color: #ffffff;
+        font-weight: bold;
         text-align: center;
       }
       #map {
@@ -98,9 +104,11 @@
         <!-- Los datos de las rutas se llenarán aquí -->
       </tbody>
     </table>
+    <p id="totalDistance">Distancia Total: 0 km</p>
     <script>
-      var   iconReferenceUrl= "https://img.icons8.com/material-rounded/96/order-delivered.png";
-      var iconPinUrl = "https://img.icons8.com/material-sharp/96/marker.png"
+      var iconReferenceUrl =
+        "https://img.icons8.com/material-rounded/96/order-delivered.png";
+      var iconPinUrl = "https://img.icons8.com/material-sharp/96/marker.png";
       var map = L.map("map").setView(
         [13.73543974906535, -89.21775920029742],
         13
@@ -134,27 +142,32 @@
 
       var trabajo = L.marker([13.683863970128206, -89.23404656723463], {
         icon: iconReference,
-      }).addTo(map).bindPopup("Trabajo");
-
-      var universidadPedagogica = L.marker([
-        13.70816855834151, -89.20255408813718,
-      ], {
-        icon: iconDestiny
       })
+        .addTo(map)
+        .bindPopup("Trabajo");
+
+      var universidadPedagogica = L.marker(
+        [13.70816855834151, -89.20255408813718],
+        {
+          icon: iconDestiny,
+        }
+      )
         .addTo(map)
         .bindPopup("Universidad Pedagógica");
-      var universidadEvangelica = L.marker([
-        13.71506965343425, -89.23862816352852,
-      ], {
-        icon: iconDestiny
-      })
+      var universidadEvangelica = L.marker(
+        [13.71506965343425, -89.23862816352852],
+        {
+          icon: iconDestiny,
+        }
+      )
         .addTo(map)
         .bindPopup("Universidad Evangélica");
-      var universidadModularAbierta = L.marker([
-        13.702757644812513, -89.21718850348172,
-      ], {
-        icon: iconDestiny
-      })
+      var universidadModularAbierta = L.marker(
+        [13.702757644812513, -89.21718850348172],
+        {
+          icon: iconDestiny,
+        }
+      )
         .addTo(map)
         .bindPopup("Universidad Modular Abierta");
 
@@ -257,7 +270,15 @@
       });
 
       function filterTable() {
-        var input, filter, table, tr, td, i, j, txtValue;
+        var input,
+          filter,
+          table,
+          tr,
+          td,
+          i,
+          j,
+          txtValue,
+          totalDistance = 0;
         input = document.getElementById("filterInput");
         filter = input.value.toUpperCase();
         table = document.getElementById("route-info");
@@ -271,11 +292,17 @@
               txtValue = td[j].textContent || td[j].innerText;
               if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
+                if (td[2]) {
+                  // Asumiendo que la distancia está en la tercera columna
+                  totalDistance += parseFloat(td[2].textContent);
+                }
                 break;
               }
             }
           }
         }
+        document.getElementById("totalDistance").textContent =
+          "Distancia Total: " + totalDistance.toFixed(2) + " km";
       }
     </script>
   </body>
